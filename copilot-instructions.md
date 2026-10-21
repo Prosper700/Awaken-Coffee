@@ -1,0 +1,1 @@
+C:/Windows/system32/New_store/my-store-theme/AGENTS.md
