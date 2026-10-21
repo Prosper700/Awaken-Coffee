@@ -1,0 +1,30 @@
+<section class="awaken-banner" style="background: {{ section.settings.bg_color }};">
+  <div class="awaken-banner__inner">
+    <h2>{{ section.settings.heading }}</h2>
+    {% if section.settings.subtext != blank %}
+      <p>{{ section.settings.subtext }}</p>
+    {% endif %}
+    {% if section.settings.button_label != blank %}
+      <a class="button" href="{{ section.settings.button_link }}">{{ section.settings.button_label }}</a>
+    {% endif %}
+  </div>
+</section>
+
+{% stylesheet %}
+  .awaken-banner { padding: 64px 20px; text-align: center; }
+  .awaken-banner__inner { max-width: 640px; margin: 0 auto; }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Awaken banner",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Wake up to better coffee" },
+    { "type": "textarea", "id": "subtext", "label": "Subtext", "default": "Small-batch roasted, delivered fresh." },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Shop beans" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+    { "type": "color", "id": "bg_color", "label": "Background", "default": "#f3e9dc" }
+  ],
+  "presets": [{ "name": "Awaken banner" }]
+}
+{% endschema %}
