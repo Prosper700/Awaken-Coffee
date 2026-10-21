@@ -1,0 +1,47 @@
+{%- assign featured = section.settings.collection | default: collections.all -%}
+
+<section class="awaken-featured">
+  <div class="awaken-featured__inner">
+    {% if section.settings.heading != blank %}
+      <h2>{{ section.settings.heading }}</h2>
+    {% endif %}
+
+    <div class="awaken-featured__grid" style="--columns: {{ section.settings.columns }};">
+      {% for product in featured.products limit: section.settings.limit %}
+        <a class="awaken-featured__card" href="{{ product.url }}">
+          {% if product.featured_image %}
+            {{ product.featured_image | image_url: width: 600 | image_tag: loading: 'lazy', widths: '300, 600' }}
+          {% endif %}
+          <h3>{{ product.title }}</h3>
+          <p>{{ product.price | money }}</p>
+        </a>
+      {% else %}
+        <p>Add products to this collection.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .awaken-featured { padding: 48px 20px; }
+  .awaken-featured__inner { max-width: 1100px; margin: 0 auto; }
+  .awaken-featured__grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  @media (min-width: 750px) {
+    .awaken-featured__grid { grid-template-columns: repeat(var(--columns), 1fr); }
+  }
+  .awaken-featured__card { text-decoration: none; color: inherit; }
+  .awaken-featured__card img { width: 100%; height: auto; display: block; border-radius: 8px; }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Awaken featured",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Fresh roasts" },
+    { "type": "collection", "id": "collection", "label": "Collection" },
+    { "type": "range", "id": "limit", "label": "Products to show", "min": 2, "max": 12, "step": 1, "default": 4 },
+    { "type": "range", "id": "columns", "label": "Columns on desktop", "min": 2, "max": 4, "step": 1, "default": 4 }
+  ],
+  "presets": [{ "name": "Awaken featured" }]
+}
+{% endschema %}
