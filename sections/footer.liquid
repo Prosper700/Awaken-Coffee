@@ -1,38 +1,130 @@
-<footer>
-  <div class="footer__copyright">
-    &copy;
-    {{ 'now' | date: '%Y' }}
-    {{ shop.name | link_to: routes.root_url }}, {{ powered_by_link }}
-  </div>
+<footer class="full-width">
+  <div class="footer__inner">
+    {% if section.settings.show_newsletter %}
+      <div class="footer__newsletter">
+        <div class="footer__newsletter-text">
+          <h2>{{ section.settings.newsletter_heading }}</h2>
+          {% if section.settings.newsletter_text != blank %}
+            <p>{{ section.settings.newsletter_text }}</p>
+          {% endif %}
+        </div>
 
-  <div class="footer__links">
-    {% for link in section.settings.menu.links %}
-      {{ link.title | link_to: link.url }}
-    {% endfor %}
-  </div>
-
-  <div class="footer__payment">
-    {% if section.settings.show_payment_icons %}
-      {% for type in shop.enabled_payment_types %}
-        {{ type | payment_type_svg_tag }}
-      {% endfor %}
+        {% form 'customer', class: 'footer__form' %}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <input
+            type="email"
+            name="contact[email]"
+            placeholder="Your email address"
+            aria-label="Email address"
+            autocomplete="email"
+            value="{{ form.email }}"
+            required
+          >
+          <button type="submit">Subscribe</button>
+          {% if form.posted_successfully? %}
+            <p class="footer__message">Thanks for subscribing!</p>
+          {% endif %}
+          {% if form.errors %}
+            <p class="footer__message">{{ form.errors | default_errors }}</p>
+          {% endif %}
+        {% endform %}
+      </div>
     {% endif %}
+
+    <div class="footer__bottom">
+      <div class="footer__copyright">
+        &copy;
+        {{ 'now' | date: '%Y' }}
+        {{ shop.name | link_to: routes.root_url }}, {{ powered_by_link }}
+      </div>
+
+      <div class="footer__links">
+        {% for link in section.settings.menu.links %}
+          {{ link.title | link_to: link.url }}
+        {% endfor %}
+      </div>
+
+      <div class="footer__payment">
+        {% if section.settings.show_payment_icons %}
+          {% for type in shop.enabled_payment_types %}
+            {{ type | payment_type_svg_tag }}
+          {% endfor %}
+        {% endif %}
+      </div>
+    </div>
   </div>
 </footer>
 
 {% stylesheet %}
   footer {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 2rem;
+    margin-top: 0;
+    background: var(--awaken-dark);
+    color: var(--awaken-tan);
+    padding: 48px 20px 24px;
   }
   footer a {
     text-decoration: none;
-    color: var(--color-foreground);
+    color: var(--awaken-tan);
+    transition: color 0.2s;
+  }
+  footer a:hover { color: var(--awaken-gold); }
+
+  footer .footer__inner { max-width: 1100px; margin: 0 auto; }
+
+  footer .footer__newsletter {
+    display: grid;
+    gap: 20px;
+    padding-bottom: 32px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid rgba(218, 187, 158, 0.25);
+  }
+  @media (min-width: 750px) {
+    footer .footer__newsletter { grid-template-columns: 1fr 1fr; align-items: center; }
+  }
+  footer .footer__newsletter h2 {
+    font-family: var(--awaken-font-heading);
+    font-size: 2rem;
+    margin: 0 0 8px;
+    color: var(--awaken-cream);
+  }
+  footer .footer__newsletter p { margin: 0; line-height: 1.6; }
+
+  footer .footer__form { display: flex; flex-wrap: wrap; gap: 12px; }
+  footer .footer__form input[type='email'] {
+    flex: 1 1 200px;
+    padding: 12px 20px;
+    border: 1px solid var(--awaken-tan);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--awaken-cream);
+    font: inherit;
+  }
+  footer .footer__form input[type='email']::placeholder { color: var(--awaken-tan); opacity: 0.7; }
+  footer .footer__form button {
+    padding: 12px 28px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--awaken-gold);
+    color: var(--awaken-dark);
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  footer .footer__form button:hover { background: var(--awaken-band); }
+  footer .footer__message { flex-basis: 100%; font-size: 0.9rem; }
+
+  footer .footer__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    font-size: 0.9rem;
   }
   footer .footer__links,
   footer .footer__payment {
     display: flex;
+    flex-wrap: wrap;
     gap: 1rem;
   }
 {% endstylesheet %}
@@ -51,6 +143,24 @@
       "id": "show_payment_icons",
       "label": "t:labels.show_payment_icons",
       "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_newsletter",
+      "label": "Show newsletter signup",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "newsletter_heading",
+      "label": "Newsletter heading",
+      "default": "Join the Awaken club"
+    },
+    {
+      "type": "textarea",
+      "id": "newsletter_text",
+      "label": "Newsletter text",
+      "default": "Fresh roasts, brewing tips and first access to new beans."
     }
   ]
 }
