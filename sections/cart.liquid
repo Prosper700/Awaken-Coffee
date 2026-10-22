@@ -1,33 +1,116 @@
 {% comment %}
-  This section is used in the cart template to render /cart page with an
-  overview of the items in customer's cart.
-
+  Cart page: line items, quantity update, and checkout.
   https://shopify.dev/docs/storefronts/themes/architecture/templates/cart
 {% endcomment %}
 
-<h1>{{ 'cart.title' | t }}</h1>
+<section class="awaken-cart">
+  <h1>{{ 'cart.title' | t }}</h1>
 
-<form action="{{ routes.cart_url }}" method="post">
-  <table>
-    {% for item in cart.items %}
-      <tr>
-        <td>
-          {% render 'image', image: item.image, url: item.url %}
-        </td>
-        <td>
-          <p>{{ item.product.title }}</p>
-          {{ 'cart.remove' | t | link_to: item.url_to_remove }}
-        </td>
-        <td>
-          <input type="text" name="updates[]" value="{{ item.quantity }}">
-          <input type="submit" value="{{ 'cart.update' | t }}">
-        </td>
-      </tr>
-    {% endfor %}
-  </table>
+  {% if cart.item_count == 0 %}
+    <p class="awaken-cart__empty">Your cart is empty.</p>
+    <a class="awaken-cart__button" href="{{ routes.all_products_url }}">Continue shopping</a>
+  {% else %}
+    <form action="{{ routes.cart_url }}" method="post">
+      <div class="awaken-cart__items">
+        {% for item in cart.items %}
+          <div class="awaken-cart__item">
+            <div class="awaken-cart__image">
+              {% render 'image', image: item.image, url: item.url %}
+            </div>
 
-  <input type="submit" name="checkout" value="{{ 'cart.checkout' | t }}">
-</form>
+            <div class="awaken-cart__details">
+              <a class="awaken-cart__title" href="{{ item.url }}">{{ item.product.title }}</a>
+              {% unless item.product.has_only_default_variant %}
+                <p>{{ item.variant.title }}</p>
+              {% endunless %}
+              <p>{{ item.final_price | money }}</p>
+              {{ 'cart.remove' | t | link_to: item.url_to_remove }}
+            </div>
+
+            <div class="awaken-cart__quantity">
+              <label for="qty-{{ forloop.index }}">Quantity</label>
+              <input
+                type="number"
+                name="updates[]"
+                id="qty-{{ forloop.index }}"
+                value="{{ item.quantity }}"
+                min="0"
+              >
+            </div>
+
+            <div class="awaken-cart__line-total">{{ item.final_line_price | money }}</div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <div class="awaken-cart__summary">
+        <p class="awaken-cart__subtotal">
+          <span>Subtotal</span>
+          <strong>{{ cart.total_price | money }}</strong>
+        </p>
+        <div class="awaken-cart__actions">
+          <button type="submit" name="update" class="awaken-cart__button awaken-cart__button--secondary">
+            {{ 'cart.update' | t }}
+          </button>
+          <button type="submit" name="checkout" class="awaken-cart__button">
+            {{ 'cart.checkout' | t }}
+          </button>
+        </div>
+      </div>
+    </form>
+  {% endif %}
+</section>
+
+{% stylesheet %}
+  .awaken-cart { padding: 32px 0 56px; max-width: 900px; margin: 0 auto; }
+  .awaken-cart h1 {
+    font-family: var(--awaken-font-heading);
+    font-size: clamp(2.25rem, 5vw, 3rem);
+    color: var(--awaken-dark);
+    margin: 0 0 24px;
+  }
+  .awaken-cart a { color: var(--awaken-brown); }
+  .awaken-cart__item {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 12px 16px;
+    align-items: start;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(43, 26, 16, 0.15);
+  }
+  @media (min-width: 750px) {
+    .awaken-cart__item { grid-template-columns: 96px 1fr 120px 100px; align-items: center; }
+  }
+  .awaken-cart__image img { width: 100%; height: auto; border-radius: 8px; display: block; }
+  .awaken-cart__details p { margin: 4px 0; }
+  .awaken-cart__title { font-weight: 700; color: var(--awaken-dark); text-decoration: none; }
+  .awaken-cart__quantity label { display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 4px; }
+  .awaken-cart__quantity input {
+    width: 80px;
+    padding: 10px 12px;
+    border: 1px solid var(--awaken-brown);
+    border-radius: 8px;
+    background: #fff8ee;
+    font: inherit;
+  }
+  .awaken-cart__line-total { font-weight: 700; color: var(--awaken-brown); }
+  .awaken-cart__summary { margin-top: 24px; display: grid; gap: 16px; justify-items: end; }
+  .awaken-cart__subtotal { margin: 0; display: flex; gap: 16px; font-size: 1.25rem; }
+  .awaken-cart__actions { display: flex; flex-wrap: wrap; gap: 12px; }
+  .awaken-cart__button {
+    display: inline-block;
+    padding: 12px 28px;
+    border: 1px solid var(--awaken-gold);
+    border-radius: 999px;
+    background: var(--awaken-gold);
+    color: var(--awaken-dark);
+    font: inherit;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .awaken-cart__button--secondary { background: transparent; color: var(--awaken-dark); border-color: var(--awaken-brown); }
+{% endstylesheet %}
 
 {% schema %}
 {
