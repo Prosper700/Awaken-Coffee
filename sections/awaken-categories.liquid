@@ -50,6 +50,9 @@
   }
   .awaken-categories__tile:hover { background: var(--awaken-brown); color: var(--awaken-cream); }
   .awaken-categories__tile img { width: 56px; height: 56px; object-fit: contain; }
+  .awaken-categories__tile:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
 {% endstylesheet %}
 
 {% schema %}
