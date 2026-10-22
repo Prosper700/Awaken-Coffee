@@ -1,45 +1,142 @@
 {% comment %}
-  This section is used in the product template to render product page with
-  media, content, and add-to-cart form.
-
+  Product page: media, content, and add-to-cart form.
   https://shopify.dev/docs/storefronts/themes/architecture/templates/product
 {% endcomment %}
 
-<div class="product-images">
-  {% for image in product.images %}
-    {% render 'image', class: 'product-image', image: image %}
-  {% endfor %}
-</div>
+<section class="awaken-product">
+  <div class="product-images">
+    {% for image in product.images %}
+      {% render 'image', class: 'product-image', image: image %}
+    {% endfor %}
+  </div>
 
-<div class="product-info">
-  <h1>{{ product.title }}</h1>
-  <p>{{ product.price | money }}</p>
-  <p>{{ product.description }}</p>
-</div>
+  <div class="product-details">
+    <div class="product-info">
+      <h1>{{ product.title }}</h1>
+      <p class="product-price">{{ product.price | money }}</p>
+      <div class="product-description">{{ product.description }}</div>
+    </div>
 
-<div class="product-form">
-  {% form 'product', product %}
-    {% assign current_variant = product.selected_or_first_available_variant %}
+    <div class="product-form">
+      {% form 'product', product %}
+        {% assign current_variant = product.selected_or_first_available_variant %}
 
-    <select name="id">
-      {% for variant in product.variants %}
-        <option
-          value="{{ variant.id }}"
-          {% if variant == current_variant %}
-            selected="selected"
-          {% endif %}
+        {% if product.has_only_default_variant %}
+          <input type="hidden" name="id" value="{{ current_variant.id }}">
+        {% else %}
+          <label for="variant-{{ section.id }}">Choose an option</label>
+          <select name="id" id="variant-{{ section.id }}">
+            {% for variant in product.variants %}
+              <option
+                value="{{ variant.id }}"
+                {% if variant == current_variant %}selected="selected"{% endif %}
+              >
+                {{ variant.title }} - {{ variant.price | money }}
+              </option>
+            {% endfor %}
+          </select>
+        {% endif %}
+
+        <label for="quantity-{{ section.id }}">Quantity</label>
+        <input
+          type="number"
+          name="quantity"
+          id="quantity-{{ section.id }}"
+          min="1"
+          value="1"
         >
-          {{ variant.title }} - {{ variant.price | money }}
-        </option>
-      {% endfor %}
-    </select>
 
-    <input type="text" name="quantity" min="1" value="1">
+        <button type="submit" class="product-add" {% unless product.available %}disabled{% endunless %}>
+          {% if product.available %}Add to cart{% else %}Sold out{% endif %}
+        </button>
 
-    <input type="submit" value="Add to cart">
-    {{ form | payment_button }}
-  {% endform %}
-</div>
+        {% if product.available %}
+          {{ form | payment_button }}
+        {% endif %}
+      {% endform %}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .awaken-product {
+    display: grid;
+    gap: 32px;
+    padding: 32px 0 56px;
+  }
+  @media (min-width: 900px) {
+    .awaken-product {
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 56px;
+      align-items: start;
+      padding: 56px 0 72px;
+    }
+    .awaken-product .product-details {
+      position: sticky;
+      top: 24px;
+    }
+  }
+
+  .awaken-product .product-images { display: grid; gap: 12px; }
+  @media (min-width: 750px) {
+    .awaken-product .product-images { grid-template-columns: repeat(2, 1fr); }
+    .awaken-product .product-images > :first-child { grid-column: 1 / -1; }
+  }
+  .awaken-product .product-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 12px;
+  }
+
+  .awaken-product h1 {
+    font-family: var(--awaken-font-heading);
+    font-size: clamp(2.25rem, 5vw, 3.25rem);
+    line-height: 1.1;
+    margin: 0 0 12px;
+    color: var(--awaken-dark);
+  }
+  .awaken-product .product-price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--awaken-brown);
+    margin: 0 0 20px;
+  }
+  .awaken-product .product-description {
+    line-height: 1.7;
+    max-width: 52ch;
+    color: var(--awaken-dark);
+    margin-bottom: 28px;
+  }
+
+  .awaken-product .product-form form { display: grid; gap: 10px; }
+  .awaken-product label { font-weight: 700; font-size: 0.9rem; color: var(--awaken-dark); }
+  .awaken-product select,
+  .awaken-product input[type='number'] {
+    padding: 12px 16px;
+    border: 1px solid var(--awaken-brown);
+    border-radius: 8px;
+    background: #fff8ee;
+    color: var(--awaken-dark);
+    font: inherit;
+  }
+  .awaken-product input[type='number'] { max-width: 120px; }
+
+  .awaken-product .product-add {
+    margin-top: 8px;
+    padding: 14px 28px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--awaken-gold);
+    color: var(--awaken-dark);
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .awaken-product .product-add:hover { background: var(--awaken-band); }
+  .awaken-product .product-add:disabled { opacity: 0.5; cursor: not-allowed; }
+{% endstylesheet %}
 
 {% schema %}
 {
