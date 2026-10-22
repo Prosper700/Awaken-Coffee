@@ -1,0 +1,14 @@
+:root {
+  --awaken-dark: #2b1a10;
+  --awaken-brown: #7a5236;
+  --awaken-tan: #dabb9e;
+  --awaken-cream: #f5ede4;
+  --awaken-gold: #e9a23b;
+  --awaken-band: #fde3b8;
+  --awaken-font-heading: 'Dancing Script', cursive;
+  --awaken-font-body: 'DM Sans', system-ui, sans-serif;
+}
+
+body {
+  font-family: var(--awaken-font-body);
+}

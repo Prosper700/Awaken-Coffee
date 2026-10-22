@@ -1,0 +1,92 @@
+<section class="awaken-hero">
+  <div class="awaken-hero__inner">
+    <div class="awaken-hero__media">
+      {% if section.settings.image %}
+        {{ section.settings.image
+          | image_url: width: 900
+          | image_tag: loading: 'eager', fetchpriority: 'high', widths: '450, 900', sizes: '(min-width: 900px) 45vw, 90vw', alt: section.settings.heading }}
+      {% endif %}
+    </div>
+    <div class="awaken-hero__content">
+      <h1>{{ section.settings.heading }}</h1>
+      {% if section.settings.subtext != blank %}
+        <p>{{ section.settings.subtext }}</p>
+      {% endif %}
+      {% if section.settings.button_label != blank %}
+        <a class="awaken-hero__button" href="{{ section.settings.button_link | default: routes.all_products_url }}">
+          {{ section.settings.button_label }}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .awaken-hero {
+    background: linear-gradient(90deg, var(--awaken-dark) 0%, #3a2216 45%, var(--awaken-brown) 100%);
+    color: var(--awaken-cream);
+    padding: 24px 20px;
+  }
+  .awaken-hero__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    gap: 32px;
+    align-items: center;
+  }
+  @media (min-width: 900px) {
+    .awaken-hero__inner { grid-template-columns: 1fr 1fr; padding-block: 32px; }
+  }
+.awaken-hero__media { height: 260px; }
+@media (min-width: 900px) {
+  .awaken-hero__media { height: 340px; }
+}
+.awaken-hero__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  -webkit-mask-image: radial-gradient(circle at center, #000 55%, transparent 72%);
+  mask-image: radial-gradient(circle at center, #000 55%, transparent 72%);
+}
+  .awaken-hero h1 {
+    font-family: var(--awaken-font-heading);
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    line-height: 1.1;
+    margin: 0 0 16px;
+    color: var(--awaken-cream);
+  }
+  .awaken-hero p {
+    color: var(--awaken-tan);
+    font-size: 1.125rem;
+    line-height: 1.7;
+    margin: 0 0 28px;
+    max-width: 46ch;
+  }
+  .awaken-hero__button {
+    display: inline-block;
+    padding: 12px 32px;
+    border: 1px solid var(--awaken-tan);
+    border-radius: 999px;
+    background: rgba(218, 187, 158, 0.2);
+    color: var(--awaken-cream);
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+  .awaken-hero__button:hover { background: var(--awaken-gold); color: var(--awaken-dark); }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Awaken hero",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Hero image" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Wake up to better coffee" },
+    { "type": "textarea", "id": "subtext", "label": "Subtext", "default": "Small-batch roasted beans, delivered fresh to your door." },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Shop beans" },
+    { "type": "url", "id": "button_link", "label": "Button link" }
+  ],
+  "presets": [{ "name": "Awaken hero" }]
+}
+{% endschema %}
