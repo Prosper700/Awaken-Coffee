@@ -30,7 +30,15 @@
     .awaken-featured__grid { grid-template-columns: repeat(var(--columns), 1fr); }
   }
   .awaken-featured__card { text-decoration: none; color: inherit; }
-  .awaken-featured__card img { width: 100%; height: auto; display: block; border-radius: 8px; }
+  .awaken-featured__card img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+  border-radius: 8px;
+}
+.awaken-featured__card h3 { margin: 12px 0 4px; font-size: 1rem; }
+.awaken-featured__card p { margin: 0; }
 {% endstylesheet %}
 
 {% schema %}
