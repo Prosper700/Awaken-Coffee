@@ -1,0 +1,22 @@
+{% style %}
+  html { background-color: var(--awaken-dark); }
+
+  body {
+    max-width: 1280px;
+    margin-inline: auto;
+    background: var(--awaken-cream);
+  }
+
+  @media (min-width: 1700px) {
+    body { max-width: 1200px; }
+    html {
+      background-image:
+        url('{{ 'cup-left.webp' | asset_url }}'),
+        url('{{ 'cup-right.webp' | asset_url }}');
+      background-repeat: no-repeat, no-repeat;
+      background-position: left 3vw top 30vh, right 3vw bottom 15vh;
+      background-size: 200px auto, 200px auto;
+      background-attachment: fixed, fixed;
+    }
+  }
+{% endstyle %}
