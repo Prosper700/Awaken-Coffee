@@ -1,0 +1,86 @@
+<section class="awaken-categories">
+  <div class="awaken-categories__inner">
+    {% if section.settings.heading != blank %}
+      <h2>{{ section.settings.heading }}</h2>
+    {% endif %}
+    <div class="awaken-categories__grid">
+      {% for block in section.blocks %}
+        <a class="awaken-categories__tile" href="{{ block.settings.link | default: routes.all_products_url }}" {{ block.shopify_attributes }}>
+          {% if block.settings.image %}
+            {{ block.settings.image | image_url: width: 160 | image_tag: loading: 'lazy', widths: '80, 160', alt: block.settings.label }}
+          {% endif %}
+          <span>{{ block.settings.label }}</span>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .awaken-categories { background: var(--awaken-cream); padding: 48px 20px 8px; }
+  .awaken-categories__inner { max-width: 1100px; margin: 0 auto; }
+  .awaken-categories h2 {
+    font-family: var(--awaken-font-heading);
+    font-size: 2.25rem;
+    color: var(--awaken-dark);
+    margin: 0 0 24px;
+  }
+  .awaken-categories__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  @media (min-width: 750px) {
+    .awaken-categories__grid { grid-template-columns: repeat(5, 1fr); }
+  }
+  .awaken-categories__tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    min-height: 140px;
+    padding: 20px;
+    border-radius: 12px;
+    background: var(--awaken-dark);
+    color: var(--awaken-tan);
+    text-decoration: none;
+    text-align: center;
+    transition: background 0.2s, color 0.2s;
+  }
+  .awaken-categories__tile:hover { background: var(--awaken-brown); color: var(--awaken-cream); }
+  .awaken-categories__tile img { width: 56px; height: 56px; object-fit: contain; }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Awaken categories",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Shop by category" }
+  ],
+  "blocks": [
+    {
+      "type": "tile",
+      "name": "Category tile",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Icon or image" },
+        { "type": "text", "id": "label", "label": "Label", "default": "Beans" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Awaken categories",
+      "blocks": [
+        { "type": "tile", "settings": { "label": "Beans" } },
+        { "type": "tile", "settings": { "label": "Ground coffee" } },
+        { "type": "tile", "settings": { "label": "Espresso" } },
+        { "type": "tile", "settings": { "label": "Equipment" } },
+        { "type": "tile", "settings": { "label": "Pastries" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
