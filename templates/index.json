@@ -9,12 +9,133 @@
  */
 {
   "sections": {
-    "main": {
-      "type": "hello-world",
-      "settings": {}
+    "awaken_hero_g7YC3r": {
+      "type": "awaken-hero",
+      "name": "Awaken hero",
+      "settings": {
+        "image": "shopify://shop_images/ceb747ec-2a7c-4e71-a911-acc4c6bdadc2.png",
+        "heading": "Wake up to better coffee",
+        "subtext": "Small-batch roasted beans, delivered fresh to your door.",
+        "button_label": "Shop beans",
+        "button_link": ""
+      }
+    },
+    "awaken_categories_WR6XFm": {
+      "type": "awaken-categories",
+      "blocks": {
+        "tile_hNbN6e": {
+          "type": "tile",
+          "settings": {
+            "label": "Beans",
+            "link": ""
+          }
+        },
+        "tile_6gjMdn": {
+          "type": "tile",
+          "settings": {
+            "label": "Ground coffee",
+            "link": ""
+          }
+        },
+        "tile_Afd4wW": {
+          "type": "tile",
+          "settings": {
+            "label": "Espresso",
+            "link": ""
+          }
+        },
+        "tile_DkWTmY": {
+          "type": "tile",
+          "settings": {
+            "label": "Equipment",
+            "link": ""
+          }
+        },
+        "tile_KnrfTQ": {
+          "type": "tile",
+          "settings": {
+            "label": "Pastries",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "tile_hNbN6e",
+        "tile_6gjMdn",
+        "tile_Afd4wW",
+        "tile_DkWTmY",
+        "tile_KnrfTQ"
+      ],
+      "name": "Awaken categories",
+      "settings": {
+        "heading": "Shop by category"
+      }
+    },
+    "awaken_featured_rHAtfF": {
+      "type": "awaken-featured",
+      "name": "Awaken featured",
+      "settings": {
+        "heading": "Fresh roasts",
+        "collection": "",
+        "limit": 4,
+        "columns": 4
+      }
+    },
+    "awaken_banner_MjfPxH": {
+      "type": "awaken-banner",
+      "name": "Awaken banner",
+      "settings": {
+        "heading": "Wake up to better coffee",
+        "subtext": "Small-batch roasted, delivered fresh.",
+        "button_label": "Shop beans",
+        "button_link": "",
+        "bg_color": "#FDE3B8"
+      }
+    },
+    "awaken_testimonials_DJypnq": {
+      "type": "awaken-testimonials",
+      "blocks": {
+        "testimonial_UPHE9m": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Smooth, rich and never bitter. It changed my mornings.",
+            "author": "Sample Customer",
+            "location": "Abuja"
+          }
+        },
+        "testimonial_xPBRay": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "The House Blend arrived fresh and smelled amazing.",
+            "author": "Sample Customer",
+            "location": "Lagos"
+          }
+        },
+        "testimonial_TnMRYf": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Fast delivery and the espresso roast is excellent.",
+            "author": "Sample Customer",
+            "location": "Kano"
+          }
+        }
+      },
+      "block_order": [
+        "testimonial_UPHE9m",
+        "testimonial_xPBRay",
+        "testimonial_TnMRYf"
+      ],
+      "name": "Awaken testimonials",
+      "settings": {
+        "heading": "What our customers say"
+      }
     }
   },
   "order": [
-    "main"
+    "awaken_hero_g7YC3r",
+    "awaken_categories_WR6XFm",
+    "awaken_featured_rHAtfF",
+    "awaken_banner_MjfPxH",
+    "awaken_testimonials_DJypnq"
   ]
 }
