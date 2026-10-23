@@ -1,15 +1,17 @@
 <!doctype html>
 <html lang="{{ request.locale.iso_code }}">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-{{ 'awaken-theme.css' | asset_url | stylesheet_tag }}
   <head>
+    {% # Fonts %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
     {% # Inlined CSS Variables %}
     {% render 'css-variables' %}
 
     {% # Load and preload the critical CSS %}
     {{ 'critical.css' | asset_url | stylesheet_tag: preload: true }}
+    {{ 'awaken-theme.css' | asset_url | stylesheet_tag }}
 
     {% # Social, title, etc. %}
     {% render 'meta-tags' %}
@@ -21,7 +23,9 @@
   <body>
     {% sections 'header-group' %}
 
-    {{ content_for_layout }}
+    <main id="MainContent">
+      {{ content_for_layout }}
+    </main>
 
     {% sections 'footer-group' %}
   </body>
