@@ -1,20 +1,22 @@
 <header class="full-width">
-  <h2 class="header__title">
+  <div class="header__title">
     {{ shop.name | link_to: routes.root_url }}
-  </h2>
+  </div>
 
-  <div class="header__menu">
+  <nav class="header__menu" aria-label="Main">
     {% for link in section.settings.menu.links %}
       {{ link.title | link_to: link.url }}
     {% endfor %}
-  </div>
+  </nav>
 
   <div class="header__icons">
     {% if shop.customer_accounts_enabled %}
-      {{ 'icon-account.svg' | inline_asset_content | link_to: routes.account_url }}
+      <a href="{{ routes.account_url }}" aria-label="Account">
+        {{ 'icon-account.svg' | inline_asset_content }}
+      </a>
     {% endif %}
 
-    <a href="{{ routes.cart_url }}">
+    <a href="{{ routes.cart_url }}" aria-label="Cart, {{ cart.item_count }} items">
       {% if cart.item_count > 0 %}
         <sup>{{ cart.item_count }}</sup>
       {% endif %}
