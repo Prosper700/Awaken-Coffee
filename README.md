@@ -4,7 +4,7 @@ A responsive Shopify storefront for a fictional coffee brand, built from a Figma
 
 **Live preview:** https://awaken-coffee-kyseqlby.myshopify.com/ (storefront password: meufil)
 
-![Awaken Coffee homepage](/screenshots/home.png)
+![Awaken Coffee homepage](./screenshot/home.png)
 
 ## Design credit
 
